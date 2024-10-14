@@ -15,7 +15,7 @@
 package client
 
 import (
-	"github.com/cloudwego/kitex/client"
+	cwclient "github.com/cloudwego-contrib/cwgo-pkg/config/etcd/client"
 	"github.com/kitex-contrib/config-etcd/etcd"
 	"github.com/kitex-contrib/config-etcd/utils"
 )
@@ -28,37 +28,11 @@ const (
 )
 
 // EtcdClientSuite etcd client config suite, configure retry timeout limit and circuitbreak dynamically from etcd.
-type EtcdClientSuite struct {
-	uid        int64
-	etcdClient etcd.Client
-	service    string
-	client     string
-	opts       utils.Options
-}
+type EtcdClientSuite = cwclient.EtcdClientSuite
 
 // NewSuite service is the destination service name and client is the local identity.
 func NewSuite(service, client string, cli etcd.Client,
 	opts ...utils.Option,
 ) *EtcdClientSuite {
-	uid := etcd.AllocateUniqueID()
-	su := &EtcdClientSuite{
-		uid:        uid,
-		service:    service,
-		client:     client,
-		etcdClient: cli,
-	}
-	for _, opt := range opts {
-		opt.Apply(&su.opts)
-	}
-	return su
-}
-
-// Options return a list client.Option
-func (s *EtcdClientSuite) Options() []client.Option {
-	opts := make([]client.Option, 0, 7)
-	opts = append(opts, WithRetryPolicy(s.service, s.client, s.etcdClient, s.uid, s.opts)...)
-	opts = append(opts, WithRPCTimeout(s.service, s.client, s.etcdClient, s.uid, s.opts)...)
-	opts = append(opts, WithCircuitBreaker(s.service, s.client, s.etcdClient, s.uid, s.opts)...)
-	opts = append(opts, WithDegradation(s.service, s.client, s.etcdClient, s.uid, s.opts)...)
-	return opts
+	return cwclient.NewSuite(service, client, cli, opts...)
 }

@@ -15,7 +15,7 @@
 package server
 
 import (
-	"github.com/cloudwego/kitex/server"
+	cwserver "github.com/cloudwego-contrib/cwgo-pkg/config/etcd/server"
 	"github.com/kitex-contrib/config-etcd/etcd"
 	"github.com/kitex-contrib/config-etcd/utils"
 )
@@ -25,32 +25,11 @@ const (
 )
 
 // EtcdServerSuite etcd server config suite, configure limiter config dynamically from etcd.
-type EtcdServerSuite struct {
-	uid        int64
-	etcdClient etcd.Client
-	service    string
-	opts       utils.Options
-}
+type EtcdServerSuite = cwserver.EtcdServerSuite
 
 // NewSuite service is the destination service.
 func NewSuite(service string, cli etcd.Client,
 	opts ...utils.Option,
 ) *EtcdServerSuite {
-	uid := etcd.AllocateUniqueID()
-	su := &EtcdServerSuite{
-		uid:        uid,
-		service:    service,
-		etcdClient: cli,
-	}
-	for _, opt := range opts {
-		opt.Apply(&su.opts)
-	}
-	return su
-}
-
-// Options return a list server.Option
-func (s *EtcdServerSuite) Options() []server.Option {
-	opts := make([]server.Option, 0, 2)
-	opts = append(opts, WithLimiter(s.service, s.etcdClient, s.uid, s.opts))
-	return opts
+	return cwserver.NewSuite(service, cli, opts...)
 }

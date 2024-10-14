@@ -14,11 +14,12 @@
 
 package etcd
 
-import "sync/atomic"
+import (
+	cwetcd "github.com/cloudwego-contrib/cwgo-pkg/config/etcd/etcd"
+)
 
 var globalNum int64
 
 func AllocateUniqueID() int64 {
-	atomic.AddInt64(&globalNum, 1)
-	return atomic.LoadInt64(&globalNum)
+	return cwetcd.AllocateUniqueID()
 }

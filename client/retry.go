@@ -15,78 +15,14 @@
 package client
 
 import (
-	"context"
+	cwclient "github.com/cloudwego-contrib/cwgo-pkg/config/etcd/client"
 
 	"github.com/cloudwego/kitex/client"
-	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/cloudwego/kitex/pkg/retry"
 	"github.com/kitex-contrib/config-etcd/etcd"
 	"github.com/kitex-contrib/config-etcd/utils"
 )
 
 // WithRetryPolicy sets the retry policy from etcd configuration center.
 func WithRetryPolicy(dest, src string, etcdClient etcd.Client, uniqueID int64, opts utils.Options) []client.Option {
-	param, err := etcdClient.ClientConfigParam(&etcd.ConfigParamConfig{
-		Category:          retryConfigName,
-		ServerServiceName: dest,
-		ClientServiceName: src,
-	})
-	if err != nil {
-		panic(err)
-	}
-
-	for _, f := range opts.EtcdCustomFunctions {
-		f(&param)
-	}
-	key := param.Prefix + "/" + param.Path
-	rc := initRetryContainer(key, dest, etcdClient, uniqueID)
-	return []client.Option{
-		client.WithRetryContainer(rc),
-		client.WithCloseCallbacks(func() error {
-			// cancel the configuration listener when client is closed.
-			etcdClient.DeregisterConfig(key, uniqueID)
-			return nil
-		}),
-		client.WithCloseCallbacks(rc.Close),
-	}
-}
-
-func initRetryContainer(key, dest string,
-	etcdClient etcd.Client, uniqueID int64,
-) *retry.Container {
-	retryContainer := retry.NewRetryContainerWithPercentageLimit()
-
-	ts := utils.ThreadSafeSet{}
-
-	onChangeCallback := func(restoreDefault bool, data string, parser etcd.ConfigParser) {
-		// the key is method name, wildcard "*" can match anything.
-		rcs := map[string]*retry.Policy{}
-
-		if !restoreDefault {
-			err := parser.Decode(data, &rcs)
-			if err != nil {
-				klog.Warnf("[etcd] %s client etcd retry: unmarshal data %s failed: %s, skip...", key, data, err)
-				return
-			}
-		}
-
-		set := utils.Set{}
-		for method, policy := range rcs {
-			set[method] = true
-			if policy.Enable && policy.BackupPolicy == nil && policy.FailurePolicy == nil {
-				klog.Warnf("[etcd] %s client policy for method %s BackupPolicy and FailurePolicy must not be empty at same time",
-					dest, method)
-				continue
-			}
-			retryContainer.NotifyPolicyChange(method, *policy)
-		}
-
-		for _, method := range ts.DiffAndEmplace(set) {
-			retryContainer.DeletePolicy(method)
-		}
-	}
-
-	etcdClient.RegisterConfigCallback(context.Background(), key, uniqueID, onChangeCallback)
-
-	return retryContainer
+	return cwclient.WithRetryPolicy(dest, src, etcdClient, uniqueID, opts)
 }
