@@ -5,6 +5,7 @@ go 1.21
 require (
 	github.com/cloudwego/kitex v0.11.0
 	github.com/cloudwego/kitex-examples v0.2.2
+	github.com/kitex-contrib/config-etcd v0.2.0
 )
 
 require (
@@ -63,6 +64,6 @@ require (
 
 replace github.com/cloudwego-contrib/cwgo-pkg/config/etcd => github.com/smx-Morgan/cwgo-pkg/config/etcd v0.0.0-20241016000926-d56ef7e0f578
 
-replace github.com/apache/thrift v0.19.0 => github.com/apache/thrift v0.13.0
+replace github.com/apache/thrift v0.20.0 => github.com/apache/thrift v0.13.0
 
 replace github.com/cloudwego-contrib/cwgo-pkg/config/common => github.com/smx-Morgan/cwgo-pkg/config/common v0.0.0-20241016000926-d56ef7e0f578
