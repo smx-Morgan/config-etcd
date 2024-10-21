@@ -20,10 +20,6 @@ import (
 	"github.com/kitex-contrib/config-etcd/utils"
 )
 
-const (
-	limiterConfigName = "limit"
-)
-
 // EtcdServerSuite etcd server config suite, configure limiter config dynamically from etcd.
 type EtcdServerSuite = cwserver.EtcdServerSuite
 

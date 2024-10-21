@@ -20,13 +20,6 @@ import (
 	"github.com/kitex-contrib/config-etcd/utils"
 )
 
-const (
-	retryConfigName          = "retry"
-	rpcTimeoutConfigName     = "rpc_timeout"
-	circuitBreakerConfigName = "circuit_break"
-	degradationConfigName    = "degradation"
-)
-
 // EtcdClientSuite etcd client config suite, configure retry timeout limit and circuitbreak dynamically from etcd.
 type EtcdClientSuite = cwclient.EtcdClientSuite
 
