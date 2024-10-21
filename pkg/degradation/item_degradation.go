@@ -15,17 +15,8 @@
 package degradation
 
 import (
-	"errors"
-
 	cwdegr "github.com/cloudwego-contrib/cwgo-pkg/config/etcd/pkg/degradation"
 )
-
-var errRejected = errors.New("rejected by client degradation config")
-
-var defaultConfig = &Config{
-	Enable:     false,
-	Percentage: 0,
-}
 
 type Config = cwdegr.Config
 
