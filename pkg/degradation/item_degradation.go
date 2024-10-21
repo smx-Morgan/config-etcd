@@ -24,6 +24,5 @@ type Config = cwdegr.Config
 type Container = cwdegr.Container
 
 func NewContainer() *Container {
-
 	return cwdegr.NewContainer()
 }

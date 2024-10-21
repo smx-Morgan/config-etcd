@@ -15,8 +15,9 @@
 package etcd
 
 import (
-	common "github.com/cloudwego-contrib/cwgo-pkg/config/common"
 	"time"
+
+	common "github.com/cloudwego-contrib/cwgo-pkg/config/common"
 )
 
 const (
