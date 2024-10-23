@@ -62,8 +62,8 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/cloudwego-contrib/cwgo-pkg/config/etcd => github.com/smx-Morgan/cwgo-pkg/config/etcd v0.0.0-20241016000926-d56ef7e0f578
-
 replace github.com/apache/thrift v0.20.0 => github.com/apache/thrift v0.13.0
 
-replace github.com/cloudwego-contrib/cwgo-pkg/config/common => github.com/smx-Morgan/cwgo-pkg/config/common v0.0.0-20241016000926-d56ef7e0f578
+replace github.com/cloudwego-contrib/cwgo-pkg/config/etcd => github.com/smx-Morgan/cwgo-pkg/config/etcd v0.0.0-20241022123807-97b427526bb6
+
+replace github.com/cloudwego-contrib/cwgo-pkg/config/common => github.com/smx-Morgan/cwgo-pkg/config/common v0.0.0-20241022123807-97b427526bb6

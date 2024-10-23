@@ -15,9 +15,8 @@
 package etcd
 
 import (
+	"github.com/cloudwego-contrib/cwgo-pkg/config/etcd/etcd"
 	"time"
-
-	common "github.com/cloudwego-contrib/cwgo-pkg/config/common"
 )
 
 const (
@@ -33,7 +32,7 @@ type CustomFunction func(*Key)
 
 // ConfigParamConfig use for render the path or prefix info by go template, ref: https://pkg.go.dev/text/template
 // The fixed key shows as below.
-type ConfigParamConfig = common.ConfigParamConfig
+type ConfigParamConfig = etcd.ConfigParamConfig
 
 // ConfigParser the parser for etcd config.
-type ConfigParser = common.ConfigParser
+type ConfigParser = etcd.ConfigParser
